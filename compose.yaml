@@ -1,0 +1,49 @@
+services:
+  debianjava:
+    image: debianjava
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+
+
+  mssqldb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password23
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - default-network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P $$MSSQL_SA_PASSWORD -Q 'SELECT 1'"]
+      interval: 10s
+      retries: 3
+      start_period: 10s
+      timeout: 2s
+  sqlserver.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    depends_on:
+      mssqldb:
+        condition: service_healthy
+    command: >
+      bash -c '
+      /opt/mssql-tools/bin/sqlcmd -S mssqldb -U sa -P Password23 -d master -i docker-entrypoint-initdb.d/init.sql;
+      echo "All done!";
+      '
+    networks:
+      - default-network
+
+volumes:
+  mssql-data:
+
+networks:
+  default-network:
+    driver: bridge
