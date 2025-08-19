@@ -16,7 +16,10 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - mssql-data:/var/opt/mssql
+      - mssql-data:/var/opt/mssql/
+      - mssql-data:/var/opt/sqlserver/data
+      - mssql-data:/var/opt/sqlserver/log
+      - mssql-data:/var/opt/sqlserver/backup
     networks:
       - default-network
     restart: always

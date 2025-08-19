@@ -1,0 +1,28 @@
+package br.caixa.gov.credito.apisimulador.domain;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+@Embeddable
+public class Parcela {
+    @NotNull
+    @Column(name = "NU_PARCELA", nullable = false)
+    private Integer numero;
+    
+    @NotNull
+    @Column(name = "VR_AMORTIZACAO", nullable = false)
+    private Double valorArmortizacao;
+    
+    @NotNull
+    @Column(name = "VR_JUROS", nullable = false)
+    private Double valorJuros;
+    
+    @NotNull
+    @Column(name = "VR_PRESTACAO", nullable = false)
+    private Double valorPrestacao;
+
+    
+}
