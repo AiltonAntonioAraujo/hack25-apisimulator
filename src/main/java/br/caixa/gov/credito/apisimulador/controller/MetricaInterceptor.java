@@ -28,26 +28,26 @@ public class MetricaInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, 
-                               Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+            Exception ex) {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             String serviceName = handlerMethod.getBeanType().getSimpleName();
-            
+
             MetricaServico metrica = new MetricaServico();
             metrica.setNomeServico(serviceName);
             metrica.setEndpoint(request.getRequestURI());
             metrica.setRequestMethod(request.getMethod());
             metrica.setStatusCode(response.getStatus());
             metrica.setTimestamp(LocalDateTime.now());
-            
+
             Long start = startTime.get();
             if (start != null) {
                 long duration = System.currentTimeMillis() - start;
                 metrica.setResponseTimeMs(duration);
                 startTime.remove();
             }
-            
+
             metricaRepository.save(metrica);
         }
     }

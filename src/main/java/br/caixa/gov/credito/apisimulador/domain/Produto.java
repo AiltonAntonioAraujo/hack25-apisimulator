@@ -18,27 +18,27 @@ public class Produto {
     @Id
     @Column(name = "CO_PRODUTO")
     private Integer id;
-    
+
     @NotNull
     @Column(name = "NO_PRODUTO", nullable = false)
     private String nome;
-    
+
     @NotNull
     @Column(name = "PC_TAXA_JUROS", nullable = false)
     private Double percentualTaxaJuros;
-    
+
     @NotNull
     @Column(name = "NU_MINIMO_MESES", nullable = false)
     private Short numeroMinimoMeses;
-    
+
     @Null
     @Column(name = "NU_MAXIMO_MESES")
     private Short numeroMaximoMeses;
-    
+
     @NotNull
     @Column(name = "VR_MINIMO", nullable = false)
     private BigDecimal valorMinimo;
-    
+
     @Null
     @Column(name = "VR_MAXIMO")
     private BigDecimal valorMaximo;
