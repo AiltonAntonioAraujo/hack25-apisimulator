@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class MetricsAspect {
+public class MetricaAspect {
 
     private final MeterRegistry meterRegistry;
 
-    public MetricsAspect(MeterRegistry meterRegistry) {
+    public MetricaAspect(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
     }
 

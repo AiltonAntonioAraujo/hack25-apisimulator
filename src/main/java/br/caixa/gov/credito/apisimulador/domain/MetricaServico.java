@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "SERVICE_METRIC")
-public class ServiceMetric {
+@Table(name = "METRICA_SERVICO")
+public class MetricaServico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "SERVICE_NAME")
-    private String serviceName;
+    @Column(name = "NOME_SERVICO")
+    private String nomeServico;
 
     @Column(name = "ENDPOINT")
     private String endpoint;

@@ -4,19 +4,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import br.caixa.gov.credito.apisimulador.controller.MetricsInterceptor;
+import br.caixa.gov.credito.apisimulador.controller.MetricaInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final MetricsInterceptor metricsInterceptor;
+    private final MetricaInterceptor metricasInterceptor;
 
-    public WebConfig(MetricsInterceptor metricsInterceptor) {
-        this.metricsInterceptor = metricsInterceptor;
+    public WebConfig(MetricaInterceptor metricasInterceptor) {
+        this.metricasInterceptor = metricasInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(metricsInterceptor);
+        registry.addInterceptor(metricasInterceptor);
     }
 }

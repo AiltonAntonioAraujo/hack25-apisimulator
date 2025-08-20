@@ -6,19 +6,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import br.caixa.gov.credito.apisimulador.application.repositories.ServiceMetricRepositoryJpa;
-import br.caixa.gov.credito.apisimulador.domain.ServiceMetric;
+import br.caixa.gov.credito.apisimulador.application.repositories.MetricaRepositoryJpa;
+import br.caixa.gov.credito.apisimulador.domain.MetricaServico;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class MetricsInterceptor implements HandlerInterceptor {
+public class MetricaInterceptor implements HandlerInterceptor {
 
-    private final ServiceMetricRepositoryJpa metricRepository;
+    private final MetricaRepositoryJpa metricaRepository;
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    public MetricsInterceptor(ServiceMetricRepositoryJpa metricRepository) {
-        this.metricRepository = metricRepository;
+    public MetricaInterceptor(MetricaRepositoryJpa metricRepository) {
+        this.metricaRepository = metricRepository;
     }
 
     @Override
@@ -34,21 +34,21 @@ public class MetricsInterceptor implements HandlerInterceptor {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             String serviceName = handlerMethod.getBeanType().getSimpleName();
             
-            ServiceMetric metric = new ServiceMetric();
-            metric.setServiceName(serviceName);
-            metric.setEndpoint(request.getRequestURI());
-            metric.setRequestMethod(request.getMethod());
-            metric.setStatusCode(response.getStatus());
-            metric.setTimestamp(LocalDateTime.now());
+            MetricaServico metrica = new MetricaServico();
+            metrica.setNomeServico(serviceName);
+            metrica.setEndpoint(request.getRequestURI());
+            metrica.setRequestMethod(request.getMethod());
+            metrica.setStatusCode(response.getStatus());
+            metrica.setTimestamp(LocalDateTime.now());
             
             Long start = startTime.get();
             if (start != null) {
                 long duration = System.currentTimeMillis() - start;
-                metric.setResponseTimeMs(duration);
+                metrica.setResponseTimeMs(duration);
                 startTime.remove();
             }
             
-            metricRepository.save(metric);
+            metricaRepository.save(metrica);
         }
     }
 }
