@@ -2,33 +2,38 @@ package br.caixa.gov.credito.apisimulador.domain;
 
 import java.util.Collection;
 
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 @Entity
 @Data
 @Table(name = "SIMULACAO")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Simulacao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CO_SIMULACAO")
-    private Long id;
+    private Integer idSimulacao;
     
     @ManyToOne
     private Produto produto;
 
-    @ElementCollection
-    @CollectionTable(name = "RESULTADO_SIMULACAO", joinColumns = @JoinColumn(name = "CO_SIMULACAO"))
-    private Collection<SistemaArmotizacao> resultadoSimulacao;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "SIMULACAO_CO_SIMULACAO", referencedColumnName = "CO_SIMULACAO")
+    @Singular(value = "resultadoSimulacao")
+    private Collection<SistemaAmortizacao> resultadoSimulacao;
 
 }

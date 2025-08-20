@@ -14,7 +14,7 @@ public class Parcela {
     
     @NotNull
     @Column(name = "VR_AMORTIZACAO", nullable = false)
-    private Double valorArmortizacao;
+    private Double valorAmortizacao;
     
     @NotNull
     @Column(name = "VR_JUROS", nullable = false)
