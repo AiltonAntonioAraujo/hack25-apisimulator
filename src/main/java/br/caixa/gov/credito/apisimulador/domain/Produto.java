@@ -1,5 +1,7 @@
 package br.caixa.gov.credito.apisimulador.domain;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -35,10 +37,10 @@ public class Produto {
     
     @NotNull
     @Column(name = "VR_MINIMO", nullable = false)
-    private Double valorMinimo;
+    private BigDecimal valorMinimo;
     
     @Null
     @Column(name = "VR_MAXIMO")
-    private Double valorMaximo;
+    private BigDecimal valorMaximo;
 
 }

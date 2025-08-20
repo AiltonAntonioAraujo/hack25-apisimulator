@@ -1,5 +1,7 @@
 package br.caixa.gov.credito.apisimulador.domain;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
@@ -14,15 +16,15 @@ public class Parcela {
     
     @NotNull
     @Column(name = "VR_AMORTIZACAO", nullable = false)
-    private Double valorAmortizacao;
+    private BigDecimal valorAmortizacao;
     
     @NotNull
     @Column(name = "VR_JUROS", nullable = false)
-    private Double valorJuros;
+    private BigDecimal valorJuros;
     
     @NotNull
     @Column(name = "VR_PRESTACAO", nullable = false)
-    private Double valorPrestacao;
+    private BigDecimal valorPrestacao;
 
     
 }

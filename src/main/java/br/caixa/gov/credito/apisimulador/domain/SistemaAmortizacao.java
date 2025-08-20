@@ -1,5 +1,7 @@
 package br.caixa.gov.credito.apisimulador.domain;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,11 +26,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SistemaAmortizacao {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_SISTEMA_AMORTIZACAO", nullable = false)
@@ -37,16 +38,27 @@ public class SistemaAmortizacao {
     @ElementCollection
     private Collection<Parcela> parcelas;
 
-    public static SistemaAmortizacao calcularPrice(int prazo, double valorDesejado, double taxaJurosMensal) {
+    /**
+     * @param prazo
+     * @param valorDesejado
+     * @param taxaJurosMensal
+     * @return SistemaAmortizacao de parcelas com a tabela Price
+     * 
+     *         P = (PV * i) / (1 – (1 + i)^-n), onde P é a parcela, PV é o valor
+     *         presente (principal), i é a taxa de juros e n é o número de
+     *         prestações
+     */
+    public static SistemaAmortizacao calcularPrice(Integer prazo, BigDecimal valorDesejado, Double taxaJurosMensal) {
         Collection<Parcela> parcelas = new ArrayList<>();
-        double juros = taxaJurosMensal / 100.0;
-        double prestacao = (valorDesejado * juros) / (1 - Math.pow(1 + juros, -prazo));
-        double saldoDevedor = valorDesejado;
+
+        BigDecimal prestacao = valorDesejado.multiply(BigDecimal.valueOf(taxaJurosMensal))
+                .divide(BigDecimal.ONE.subtract(BigDecimal.valueOf(Math.pow(1 + taxaJurosMensal, -prazo))), 10, RoundingMode.HALF_UP);
+        BigDecimal saldoDevedor = valorDesejado;
 
         for (int i = 1; i <= prazo; i++) {
-            double valorJuros = saldoDevedor * juros;
-            double valorAmortizacao = prestacao - valorJuros;
-            saldoDevedor -= valorAmortizacao;
+            BigDecimal valorJuros = saldoDevedor.multiply(BigDecimal.valueOf(taxaJurosMensal));
+            BigDecimal valorAmortizacao = prestacao.subtract(valorJuros);
+            saldoDevedor.subtract(valorAmortizacao);
 
             Parcela parcela = new Parcela();
             parcela.setNumero(i);
@@ -60,15 +72,24 @@ public class SistemaAmortizacao {
         return SistemaAmortizacao.builder().tipo(TipoSistemaAmrotizacao.PRICE).parcelas(parcelas).build();
     }
 
-    public static SistemaAmortizacao calcularSAC(int prazo, double valorDesejado, double taxaJurosMensal) {
+    /**
+     * Calcula o sistema SAC (Sistema de Amortização Constante).
+     * 
+     * @param prazo           Quantidade de parcelas
+     * @param valorDesejado   Valor principal do empréstimo
+     * @param taxaJurosMensal Taxa de juros mensal (ex: 0.01 para 1%)
+     * @return SistemaAmortizacao com parcelas calculadas com SAC
+     */
+    public static SistemaAmortizacao calcularSAC(Integer prazo, BigDecimal valorDesejado,
+            Double taxaJurosMensal) {
+
         Collection<Parcela> parcelas = new ArrayList<>();
-        double juros = taxaJurosMensal / 100.0;
-        double amortizacao = valorDesejado / prazo;
-        double saldoDevedor = valorDesejado;
+        BigDecimal amortizacao = valorDesejado.divide(BigDecimal.valueOf(prazo), 10, RoundingMode.HALF_UP);
+        BigDecimal saldoDevedor = valorDesejado;
 
         for (int i = 1; i <= prazo; i++) {
-            double valorJuros = saldoDevedor * juros;
-            double valorPrestacao = amortizacao + valorJuros;
+            BigDecimal valorJuros = saldoDevedor.multiply(BigDecimal.valueOf(taxaJurosMensal));
+            BigDecimal valorPrestacao = amortizacao.add(valorJuros);
 
             Parcela parcela = new Parcela();
             parcela.setNumero(i);
@@ -78,7 +99,7 @@ public class SistemaAmortizacao {
 
             parcelas.add(parcela);
 
-            saldoDevedor -= amortizacao;
+            saldoDevedor = saldoDevedor.subtract(amortizacao);
         }
 
         return SistemaAmortizacao.builder().tipo(TipoSistemaAmrotizacao.SAC).parcelas(parcelas).build();

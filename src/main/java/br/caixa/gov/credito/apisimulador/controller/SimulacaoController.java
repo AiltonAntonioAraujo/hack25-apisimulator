@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.caixa.gov.credito.apisimulador.service.SimulacaoService;
 import br.caixa.gov.credito.apisimulador.service.dto.SimulacaoRequestDTO;
 import br.caixa.gov.credito.apisimulador.service.dto.SimulacaoResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 @RestController
@@ -29,24 +30,39 @@ public class SimulacaoController {
     @Autowired
     private SimulacaoService simulacaoService;
 
+
+    @Operation(summary = "Registra uma nova Simulação de Crédito")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Simulação criada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+
     @PostMapping
     @ResponseBody
     public ResponseEntity<SimulacaoResponseDTO> criarSimulacao(
             @Valid @RequestBody SimulacaoRequestDTO simulacaoRequest) {
-        try {
             return new ResponseEntity<>(simulacaoService.criarSimulacao(simulacaoRequest), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
     }
 
+    @Operation(summary = "Lista todas as Simulação de Crédito")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operacão realizada com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     @GetMapping
     @ResponseBody
     public ResponseEntity<Collection<SimulacaoResponseDTO>> listarTodasAsSimulacoes() {
         return new ResponseEntity<>(simulacaoService.getAllSimulacoes(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Lista as Simulação de Crédito pelo ID da Simulação e pelo ID do Produto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operacão realizada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+            @ApiResponse(responseCode = "404", description = "Simulação não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     @GetMapping("/{idSimulacao}/{idProduto}")
     @ResponseBody
     public ResponseEntity<Collection<SimulacaoResponseDTO>> listarSimulacoesProduto(
@@ -55,12 +71,9 @@ public class SimulacaoController {
 
             @Digits(integer = 8, fraction = 0, message = "O codigo do produto deve conter até 8 dígitos") @Positive(message = "O codigo do produto deve ser positivo")
             @PathVariable Integer idProduto) {
-        try {
-            return new ResponseEntity<>(simulacaoService.findByIdAndProduto(idSimulacao, idProduto), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
+            return new ResponseEntity<>(simulacaoService.findByIdAndProduto(idSimulacao, idProduto), HttpStatus.OK);
+  
     }
 
 }
