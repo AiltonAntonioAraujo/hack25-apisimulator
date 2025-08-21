@@ -1,0 +1,24 @@
+{
+    "UserConfig": {
+        "NamespaceConfig": [
+        {
+            "Type": "EventHub",
+            "Name": "eventhack",
+            "Entities": [
+            {
+                "Name": "simulacoes",
+                "PartitionCount": "2",
+                "ConsumerGroups": [
+                {
+                    "Name": "cg1"
+                }
+                ]
+            }
+            ]
+        }
+        ], 
+        "LoggingConfig": {
+            "Type": "File"
+        }
+    }
+}

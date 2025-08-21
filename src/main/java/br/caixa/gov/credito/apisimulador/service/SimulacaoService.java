@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import br.caixa.gov.credito.apisimulador.application.mapper.SimulacaoMapper;
 import br.caixa.gov.credito.apisimulador.application.repositories.ProdutoRepositoryJPA;
 import br.caixa.gov.credito.apisimulador.application.repositories.SimulacaoRepositoryJpa;
+import br.caixa.gov.credito.apisimulador.client.message.EventHubSimulacaoProducer;
 import br.caixa.gov.credito.apisimulador.domain.Produto;
 import br.caixa.gov.credito.apisimulador.domain.Simulacao;
 import br.caixa.gov.credito.apisimulador.domain.SistemaAmortizacao;
@@ -39,6 +40,9 @@ public class SimulacaoService {
 
     @Autowired
     private SimulacaoMapper simulacaoMapper;
+
+    @Autowired
+    private EventHubSimulacaoProducer eventHubSimulacaoProducer;
 
     @PostConstruct
     public void init() {
@@ -67,6 +71,18 @@ public class SimulacaoService {
                         simulacaoRequest.valorDesejado(), produto.getPercentualTaxaJuros()))
                 .build();
 
+        // Enviar simulação para o Event Hub
+
+        //TODO: Implementar o envio da simulação para o Event Hub
+        // try{
+        //     eventHubSimulacaoProducer.enviarMensagem(simulacaoMapper.toSimulacaoResponseDto(simulacao));
+        // }catch (Exception e) {
+        //     throw new RuntimeException("Erro ao enviar mensagem para o Event Hub", e);
+        // }finally {
+        //     eventHubSimulacaoProducer.close();
+        // }
+        
+        
         return simulacaoMapper.toSimulacaoResponseDto(simulacaoRepository.save(simulacao));
     }
 

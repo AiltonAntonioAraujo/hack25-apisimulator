@@ -1,6 +1,6 @@
 #### Stage 1: Build the application
 # Use maven to compile the java application.
-FROM maven:3-amazoncorretto-17-alpine AS build
+FROM maven:3.9.11-amazoncorretto-17-alpine AS build
 
 # Set the current working directory inside the image
 WORKDIR /app
@@ -21,7 +21,8 @@ RUN mvn package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 #### Stage 2: A minimal docker image with command to run the app
-FROM amazoncorretto:17-alpine
+FROM amazoncorretto:17-alpine3.22
+
 
 ARG DEPENDENCY=/app/target/dependency
 

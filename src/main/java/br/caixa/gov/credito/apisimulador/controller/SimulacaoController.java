@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.caixa.gov.credito.apisimulador.domain.Produto;
 import br.caixa.gov.credito.apisimulador.service.SimulacaoService;
 import br.caixa.gov.credito.apisimulador.service.dto.SimulacaoRequestDTO;
 import br.caixa.gov.credito.apisimulador.service.dto.SimulacaoResponseDTO;
