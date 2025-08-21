@@ -9,15 +9,15 @@
 
 ## 🧩 Descrição do Software
 
-{{HACKATHON 2025 - CAIXA}}
-{{API SIMULADOR DE CRÉDITO - BACKEND JAVA}}
+# HACKATHON 2025 - CAIXA
+> API SIMULADOR DE CRÉDITO - BACKEND JAVA
 
 Principais funcionalidades:
-- 🔍 {{Simulacao de Crédito}} — Realiza a simulação de parcelamento de crédito com as tabelas PRICE e SAC
-- 📊 {{Consulta de Simulações Paginada}} — Permite realizar consulta de simulações com parâmetros variáveis
-- 🔐 {{API de Telemetria}} — Permite consultar a performance das APIs com informações de Tempo de Resposta e Volumetria
-- 🌐 {{Documentação}} — API documentada no padrão OPENAPI para facilitação de uso
-- 📌 {{Integração}} - Permite integração com serviços de Mensageria
+- 🔍 [Simulacao de Crédito] — Realiza a simulação de parcelamento de crédito com as tabelas PRICE e SAC
+- 📊 [Consulta de Simulações Paginada] — Permite realizar consulta de simulações com parâmetros variáveis
+- 🔐 [API de Telemetria] — Permite consultar a performance das APIs com informações de Tempo de Resposta e Volumetria
+- 🌐 [Documentação] — API documentada no padrão OPENAPI para facilitação de uso
+- 📌 [Integração] - Permite integração com serviços de Mensageria
 
 Destaques:
 - ⚡ Performance otimizada
@@ -27,8 +27,6 @@ Destaques:
 ---
 
 ## 🛠️ Tecnologias Utilizadas e suas versões
-
-> Remova o que não se aplicar e ajuste as versões conforme seu stack.
 
 | 🧰 Tecnologia             | 🔢 Versão  | 📌 Uso           |
 |---------------------------|------------:|-------------------|
